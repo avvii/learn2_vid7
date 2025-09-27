@@ -22,11 +22,20 @@ app.post('/create', (req, res) => {
         res.redirect('/');
     });
 });
+
 app.get('/file/:filename', (req, res) => {
     const filename = req.params.filename;
     fs.readFile(`./files/${filename}`, 'utf-8', (err, filedata) => {
         res.render('show',{filename:filename, filedata:filedata });
     });
 }); 
+app.get('/edit/:filename', (req, res) => {
+    res.render('edit',{filename:req.params.filename});
+});
+app.post('/edit', (req, res) => {
+    fs.rename(`./files/${req.body.prev}`, `./files/${req.body.new}`, (err) => {
+        res.redirect('/');
+    });
+});
  
 app.listen(3000);
